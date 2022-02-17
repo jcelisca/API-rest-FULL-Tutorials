@@ -111,6 +111,17 @@ public class TutorialController {
 		}
 	}
 
+	@DeleteMapping("/tutorials/delete/{title}")
+	public ResponseEntity<String> deleteTutorialByTitle(@PathVariable("title") String title) {
+		try {
+			List<Tutorial> tutorialData = tutorialRepository.findByTitleContaining(title);
+			tutorialRepository.deleteAll(tutorialData);
+				return new ResponseEntity<>("Tutorials DELETE!! ",HttpStatus.NO_CONTENT);
+			} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+
 	@DeleteMapping("/tutorials")
 	public ResponseEntity<HttpStatus> deleteAllTutorials() {
 		try {
