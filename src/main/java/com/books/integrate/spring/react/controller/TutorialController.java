@@ -4,7 +4,6 @@ import java.util.*;
 
 import com.books.integrate.spring.react.model.Tutorial;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -82,6 +81,21 @@ public class TutorialController {
 			_tutorial.setPublished(tutorial.isPublished());
 			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
 		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PutMapping("/tutorials/update/{title}")
+	public ResponseEntity<Tutorial> updateTutorialByTitle(@PathVariable("title") String title, @RequestBody Tutorial tutorial) {
+		List<Tutorial> tutorialData = tutorialRepository.findByTitleContaining(title);
+		try{
+			Tutorial _tutorial = tutorialData.get(0);
+			_tutorial.setTitle(tutorial.getTitle());
+			_tutorial.setDescription(tutorial.getDescription());
+			_tutorial.setPublished(tutorial.isPublished());
+			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
+
+		}catch(Exception err){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
