@@ -3,6 +3,7 @@ package com.books.integrate.spring.react.controller;
 import java.util.*;
 
 import com.books.integrate.spring.react.model.Tutorial;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +64,7 @@ public class TutorialController {
 	public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
 		try {
 			Tutorial _tutorial = tutorialRepository
-					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(),  false));
+					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), tutorial.getPrice(), false));
 			return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -78,6 +79,7 @@ public class TutorialController {
 			Tutorial _tutorial = tutorialData.get();
 			_tutorial.setTitle(tutorial.getTitle());
 			_tutorial.setDescription(tutorial.getDescription());
+			_tutorial.setPrice(tutorial.getPrice());
 			_tutorial.setPublished(tutorial.isPublished());
 			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
 		} else {
@@ -92,6 +94,7 @@ public class TutorialController {
 			Tutorial _tutorial = tutorialData.get(0);
 			_tutorial.setTitle(tutorial.getTitle());
 			_tutorial.setDescription(tutorial.getDescription());
+			_tutorial.setPrice(tutorial.getPrice());
 			_tutorial.setPublished(tutorial.isPublished());
 			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
 
@@ -145,6 +148,12 @@ public class TutorialController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
+	}
+
+	@GetMapping("/tutorials/byprice/{price}")
+	public List<Tutorial> getTutorialByPrice(@PathVariable("price") Integer price) {
+			List<Tutorial> tutorial = tutorialRepository.findByPrice(price);
+			return tutorial;
 	}
 
 }

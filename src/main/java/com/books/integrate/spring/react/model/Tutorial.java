@@ -19,13 +19,17 @@ public class Tutorial {
 	@Column(name = "published")
 	private boolean published;
 
+	@Column(name = "price")
+	private Integer price = 100;
+
 	public Tutorial() {
 
 	}
 
-	public Tutorial(String title, String description, boolean published) {
+	public Tutorial(String title, String description, Integer price, boolean published) {
 		this.title = title;
 		this.description = description;
+		this.price = price;
 		this.published = published;
 	}
 
@@ -57,6 +61,14 @@ public class Tutorial {
 	public void setPublished(boolean isPublished) {
 
 		this.published = isPublished;
+	}
+
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 
 	@Override
